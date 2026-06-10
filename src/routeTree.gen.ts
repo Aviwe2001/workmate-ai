@@ -16,6 +16,8 @@ import { Route as AppSummarizerRouteImport } from './routes/_app.summarizer'
 import { Route as AppResearchRouteImport } from './routes/_app.research'
 import { Route as AppPlannerRouteImport } from './routes/_app.planner'
 import { Route as AppEmailRouteImport } from './routes/_app.email'
+import { Route as AppChatIndexRouteImport } from './routes/_app.chat.index'
+import { Route as AppChatThreadIdRouteImport } from './routes/_app.chat.$threadId'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -51,6 +53,16 @@ const AppEmailRoute = AppEmailRouteImport.update({
   path: '/email',
   getParentRoute: () => AppRoute,
 } as any)
+const AppChatIndexRoute = AppChatIndexRouteImport.update({
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChatThreadIdRoute = AppChatThreadIdRouteImport.update({
+  id: '/chat/$threadId',
+  path: '/chat/$threadId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -59,6 +71,8 @@ export interface FileRoutesByFullPath {
   '/research': typeof AppResearchRoute
   '/summarizer': typeof AppSummarizerRoute
   '/api/chat': typeof ApiChatRoute
+  '/chat/$threadId': typeof AppChatThreadIdRoute
+  '/chat/': typeof AppChatIndexRoute
 }
 export interface FileRoutesByTo {
   '/email': typeof AppEmailRoute
@@ -67,6 +81,8 @@ export interface FileRoutesByTo {
   '/summarizer': typeof AppSummarizerRoute
   '/api/chat': typeof ApiChatRoute
   '/': typeof AppIndexRoute
+  '/chat/$threadId': typeof AppChatThreadIdRoute
+  '/chat': typeof AppChatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +93,8 @@ export interface FileRoutesById {
   '/_app/summarizer': typeof AppSummarizerRoute
   '/api/chat': typeof ApiChatRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/chat/$threadId': typeof AppChatThreadIdRoute
+  '/_app/chat/': typeof AppChatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,8 +105,18 @@ export interface FileRouteTypes {
     | '/research'
     | '/summarizer'
     | '/api/chat'
+    | '/chat/$threadId'
+    | '/chat/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/planner' | '/research' | '/summarizer' | '/api/chat' | '/'
+  to:
+    | '/email'
+    | '/planner'
+    | '/research'
+    | '/summarizer'
+    | '/api/chat'
+    | '/'
+    | '/chat/$threadId'
+    | '/chat'
   id:
     | '__root__'
     | '/_app'
@@ -98,6 +126,8 @@ export interface FileRouteTypes {
     | '/_app/summarizer'
     | '/api/chat'
     | '/_app/'
+    | '/_app/chat/$threadId'
+    | '/_app/chat/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,6 +186,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppEmailRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/chat/': {
+      id: '/_app/chat/'
+      path: '/chat'
+      fullPath: '/chat/'
+      preLoaderRoute: typeof AppChatIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/chat/$threadId': {
+      id: '/_app/chat/$threadId'
+      path: '/chat/$threadId'
+      fullPath: '/chat/$threadId'
+      preLoaderRoute: typeof AppChatThreadIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -165,6 +209,8 @@ interface AppRouteChildren {
   AppResearchRoute: typeof AppResearchRoute
   AppSummarizerRoute: typeof AppSummarizerRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppChatThreadIdRoute: typeof AppChatThreadIdRoute
+  AppChatIndexRoute: typeof AppChatIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -173,6 +219,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppResearchRoute: AppResearchRoute,
   AppSummarizerRoute: AppSummarizerRoute,
   AppIndexRoute: AppIndexRoute,
+  AppChatThreadIdRoute: AppChatThreadIdRoute,
+  AppChatIndexRoute: AppChatIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
