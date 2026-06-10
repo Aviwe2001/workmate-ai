@@ -58,7 +58,7 @@ function ChatView({ threadId }: { threadId: string }) {
     initialMessagesRef.current = active?.messages ?? [];
   }
 
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status } = useChat({
     id: threadId,
     messages: initialMessagesRef.current ?? [],
     transport,
